@@ -39,7 +39,7 @@
                 tools:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvBalance"
+                android:id="@+id/tvBalance1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/totalPoints"

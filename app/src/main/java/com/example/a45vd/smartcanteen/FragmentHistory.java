@@ -55,7 +55,7 @@ public class FragmentHistory extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_discount_coupon, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_history, container, false);
         lvHistory = (ListView) getActivity().findViewById(R.id.lvHistory);
         pDialog = new ProgressDialog(getActivity());
         TransactionList = new ArrayList<>();

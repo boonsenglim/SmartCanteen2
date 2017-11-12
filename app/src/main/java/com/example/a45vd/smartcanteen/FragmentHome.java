@@ -1,5 +1,6 @@
 package com.example.a45vd.smartcanteen;
 
+        import android.app.ProgressDialog;
         import android.content.Context;
         import android.os.Bundle;
         import android.support.v4.app.Fragment;
@@ -42,6 +43,8 @@ public class FragmentHome extends Fragment {
     public static boolean allowRefresh;
 
     TextView tvRewardBalance;
+    TextView tvBalance;
+
     RequestQueue queue;
 
     public static FragmentHome newInstance() {
@@ -49,9 +52,18 @@ public class FragmentHome extends Fragment {
         return fragment;
     }
 
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+
+        tvBalance = (TextView) rootView.findViewById(R.id.tvBalance1);
+        if (tvBalance != null)
+            tvBalance.setText(MainActivity.LoyaltyPoint+"");
+        return rootView;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
     }
 

@@ -96,8 +96,8 @@ public class FragmentCoupon extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_discount_coupon, container, false);
-        tvRewardBalance = (TextView) rootView.findViewById(R.id.tvBalance);
-        tvRewardBalance.setText("" + MainActivity.LoyaltyPoint);
+        //tvRewardBalance = (TextView) rootView.findViewById(R.id.tvBalance);
+        //tvRewardBalance.setText("" + MainActivity.LoyaltyPoint);
         tvPromptDiscCode = (TextView) rootView.findViewById(R.id.tvPromptDiscCode);
         allowRefresh = false;
         listViewReward = (ListView) rootView.findViewById(R.id.lvCouponList);

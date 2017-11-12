@@ -47,10 +47,10 @@ package com.example.a45vd.smartcanteen;
         import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    public static String WalletID = "";
+    public static String WalletID = "6";
     public static String email;
-    public static double Balance;
-    public static int LoyaltyPoint;
+    public static double Balance=0;
+    public static int LoyaltyPoint=0;
 /*    public static Listing entrySelected;
 
     public static List<Listing> lList = null;
@@ -73,12 +73,15 @@ public class MainActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
             Toast.makeText(this, "ERROR: NO EXTRAS FOUND!", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-        WalletID = extras.getString("WalletID");
+            //finish();
+        }else{
+            WalletID = extras.getString("WalletID");
 //        email = extras.getString("email");
-        Balance = extras.getDouble("Balance");
-       LoyaltyPoint = extras.getInt("LoyaltyPoint");
+            Balance = extras.getDouble("Balance");
+            LoyaltyPoint = extras.getInt("LoyaltyPoint");
+        }
+        checkBalance(MainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php");
+
 
         //Manually displaying the first fragment - one time only
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -140,19 +143,15 @@ public class MainActivity extends AppCompatActivity {
                                 } else if (success == 1) {
                                     Balance = jsonObject.getDouble("Balance");
                                     LoyaltyPoint = jsonObject.getInt("LoyaltyPoint");
-                                    //Toast.makeText(getApplicationContext(), "Balance loaded", Toast.LENGTH_LONG).show();
-                                    tvBalance = (TextView) findViewById(R.id.tvBalance);
-
+                                    Toast.makeText(getApplicationContext(), "Balance loaded", Toast.LENGTH_LONG).show();
+                                    tvBalance = (TextView) findViewById(R.id.tvBalance1);
                                     if (tvBalance != null)
-                                        tvBalance.setText(String.format("RM %.2f", MainActivity.Balance));
-
+                                        tvBalance.setText(MainActivity.LoyaltyPoint+"");
                                 } else if (success == 2) {
-                                    //Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
                                     err += "User not found.";
-
                                 } else {
                                     Toast.makeText(getApplicationContext(), "err", Toast.LENGTH_SHORT).show();
-
                                 }
                                 //show error
                                 if (err.length() > 0) {
