@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Smart Canteen</string>
+    <string name="Home">Home</string>
+    <string name="Coupon">Coupon</string>
+    <string name="giftCard">Gift Card</string>
+    <string name="history">History</string>
+    <string name="mainTitle">Loyalty Points</string>
+    <string name="pointsTitle">Total Points Collected:</string>
+    <string name="totalPoints">0000</string>
+    <string name="pointsLabel">points</string>
+    <string name="Redeem">Redeem</string>
+    <string name="discountTitle">Discount Coupons</string>v
+    <string name="itemTitle">Items</string>
+    <string name="historyTitle">History</string>
+    <string name="redeemName">Title</string>
+    <string name="redeemPointRequire">Point Required</string>
+    <string name="redeemAvailability">Availability</string>
+    <string name="his_redeemID">RedemptionID</string>
+    <string name="his_redeemItemName">Redeem Item Name</string>
+    <string name="his_pointsUsed">PointsUsed</string>
+    <string name="his_userName">UserName</string>
+    <string name="his_MerID">MerchantID</string>
+    <string name="his_RedeemDate">Redeem Date</string>
+    <string name="selectLabel">Selection: </string>
+    <string name="etTitle">Input your selection here!</string>
+    <string name="btnOK">OK</string>
+    <string name="code">*Discount Code</string>
+    <!--c-->
+</resources>
