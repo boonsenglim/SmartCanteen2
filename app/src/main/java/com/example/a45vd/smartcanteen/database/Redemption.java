@@ -1,24 +1,32 @@
 package com.example.a45vd.smartcanteen.database;
 
 public class Redemption {
-    private int RedemptionID;
+//    private int RedemptionID;
     private int PointNeeded;
     private int AmountAvailable;
-    private String RewardTitle;
+    private String ProductName;
 
-    public Redemption(int redemptionID, int pointNeeded, int amountAvailable, String rewardTitle) {
-        RedemptionID = redemptionID;
+    public Redemption(int redemptionID, int pointNeeded, int amountAvailable, String productName) {
+//        RedemptionID = redemptionID;
         PointNeeded = pointNeeded;
         AmountAvailable = amountAvailable;
-        RewardTitle = rewardTitle;
+        ProductName = productName;
     }
 
-    public int getRewardID() {
+/*    public int getRewardID() {
         return RedemptionID;
     }
 
     public void setRewardID(int rewardID) {
         RedemptionID = rewardID;
+    }*/
+
+    public String getProductName() {
+        return ProductName;
+    }
+
+    public void setProductName(String productName) {
+        ProductName = productName;
     }
 
     public int getPointNeeded() {
@@ -37,11 +45,5 @@ public class Redemption {
         AmountAvailable = amountAvailable;
     }
 
-    public String getRewardTitle() {
-        return RewardTitle;
-    }
 
-    public void setRewardTitle(String rewardTitle) {
-        RewardTitle = rewardTitle;
-    }
 }

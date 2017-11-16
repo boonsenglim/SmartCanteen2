@@ -1,5 +1,7 @@
 package com.example.a45vd.smartcanteen;
 
+        import android.content.Intent;
+        import android.graphics.Bitmap;
         import android.support.v4.app.Fragment;
         import android.app.ProgressDialog;
         import android.content.Context;
@@ -9,6 +11,8 @@ package com.example.a45vd.smartcanteen;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
+        import android.widget.AdapterView;
+        import android.widget.ImageView;
         import android.widget.ListView;
         import android.widget.Toast;
 
@@ -17,6 +21,7 @@ package com.example.a45vd.smartcanteen;
         import com.android.volley.RequestQueue;
         import com.android.volley.Response;
         import com.android.volley.VolleyError;
+        import com.android.volley.toolbox.JsonArrayRequest;
         import com.android.volley.toolbox.StringRequest;
         import com.android.volley.toolbox.Volley;
         import com.example.a45vd.smartcanteen.database.History;
@@ -34,13 +39,14 @@ package com.example.a45vd.smartcanteen;
 
 
 public class FragmentHistory extends Fragment {
-
+    public static boolean allowRefresh;
     public static final String TAG = "com.example.a45vd.SmartCanteen";
+    private static String GET_HISTORY_URL = "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/get_history.php";
+
     ListView lvHistory;
-    List<History> TransactionList;
+    List<History> HistoryList;
     private ProgressDialog pDialog;
-    private static String GET_TRANSACTION_URL = "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_transaction.php";
-    private static String GET_URL = "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_transfer.php";
+
     RequestQueue queue;
 
     public static FragmentHistory newInstance() {
@@ -56,15 +62,40 @@ public class FragmentHistory extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_history, container, false);
-        lvHistory = (ListView) getActivity().findViewById(R.id.lvHistory);
+        allowRefresh = false;
+        lvHistory = (ListView) rootView.findViewById(R.id.lvHistory);
         pDialog = new ProgressDialog(getActivity());
-        TransactionList = new ArrayList<>();
+        HistoryList = new ArrayList<>();
+        downloadListing(getActivity().getApplicationContext(), GET_HISTORY_URL);
 
-        if (!isConnected()) {
+        lvHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                History entry = (History) parent.getItemAtPosition(position);
+                downloadListing(getActivity(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/get_history.php");
+            }
+        });
+
+ /*       lvHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                History entry = (History) parent.getItemAtPosition(position);
+                Intent intent = new Intent(getActivity(), .class);
+                intent.putExtra("RedeemCodeID", entry.getRedeemCodeID());
+                intent.putExtra("Description", entry.getDescription());
+                intent.putExtra("Discount Code", entry.getCouponCode());
+                intent.putExtra("createAt", entry.getCreateAt());
+                intent.putExtra("WalletID", entry.getWalletID());
+                intent.putExtra("Redeem Date", entry.getRedeemDate());
+
+                startActivity(intent);
+            }
+        });*/
+
+/*        if (!isConnected()) {
             Toast.makeText(getActivity().getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
-        }
+        }*/
 
-        downloadTransaction(getActivity().getApplicationContext(), GET_TRANSACTION_URL);
         return rootView;
 
     }
@@ -78,85 +109,80 @@ public class FragmentHistory extends Fragment {
 
     }
 
-    public void downloadTransaction(Context context, String url) {
-        //mPostCommentResponse.requestStarted();
+    public void downloadListing(Context context, String url) {
+        queue = Volley.newRequestQueue(context);
         RequestQueue queue = Volley.newRequestQueue(context);
 
-        //Send data
-        try {
-            StringRequest postRequest = new StringRequest(
-                    Request.Method.POST,
-                    url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                JSONArray j = new JSONArray(response);
-                                try {
-                                    TransactionList.clear();
-                                    for (int i = 0; i < j.length(); i++) {
-                                        JSONObject transferResponse = (JSONObject) j.get(i);
-                                        String date = transferResponse.getString("Date");
-                                        String buyer = transferResponse.getString("Buyer");
-                                        String itemName = transferResponse.getString("ItemName");
-                                        String seller = transferResponse.getString("Seller");
-                                        String price = transferResponse.getString("Price");
-                                        History history = new History(date, buyer, itemName, seller, price);
-                                        TransactionList.add(history);
+        JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(
+                url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            HistoryList.clear();
+                                    for (int i = 0; i < response.length(); i++) {
+                                        JSONObject historyResponse = (JSONObject) response.get(i);
+                                        int redeemCodeID = Integer.parseInt(historyResponse.getString("RedeemCodeID"));
+                                        String desc = historyResponse.getString("Description");
+                                        String couponCode = historyResponse.getString("Discount Code");
+                                        String createAt = historyResponse.getString("Date Create");
+                                        String walletID = historyResponse.getString("WalletID");
+                                        String redeemDate = historyResponse.getString("Redeem Date");
+                                        History history = new History(redeemCodeID, desc, couponCode, createAt, walletID, redeemDate);
+                                        HistoryList.add(history);
                                     }
-                                    loadTransaction();
-                                    if (pDialog.isShowing())
-                                        pDialog.dismiss();
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                            loadListing();
 
+                        } catch (Exception e) {
+                            Toast.makeText(getActivity(), "Error:" + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getActivity().getApplicationContext(), "Error. " + error.toString(), Toast.LENGTH_LONG).show();
-                        }
-                    }) {
-                @Override
-                protected Map<String, String> getParams() {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("username", MainActivity.WalletID);
-                    return params;
-                }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        Toast.makeText(getActivity(), "Error" + volleyError.getMessage(), Toast.LENGTH_LONG).show();
 
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> params = new HashMap<>();
-                    params.put("Content-Type", "application/x-www-form-urlencoded");
-                    return params;
-                }
-            };
-            queue.add(postRequest);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                    }
+                });
+
+        // Set the tag on the request.
+        jsonObjectRequest.setTag(TAG);
+
+        // Add the request to the RequestQueue.
+        queue.add(jsonObjectRequest);
+
     }
 
 
-
-    private void loadTransaction() {
-        final HistoryAdapter historyAdapter = new HistoryAdapter(getActivity(), R.layout.fragment_history, TransactionList);
+    private void loadListing() {
+        final HistoryAdapter historyAdapter = new HistoryAdapter(getActivity(), R.layout.fragment_history, HistoryList);
         lvHistory.setAdapter(historyAdapter);
         //Toast.makeText(getApplicationContext(), "Count :" + TransactionList.size(), Toast.LENGTH_LONG).show();
     }
 
+
     @Override
-    public void onPause() {
-        super.onPause();
+    public void onResume() {
+        super.onResume();
+        if (allowRefresh) {
+            allowRefresh = false;
+            if (MainActivity.hList == null) {
+                MainActivity.hList = new ArrayList<>();
+                downloadListing(getActivity().getApplicationContext(), GET_HISTORY_URL);
+            } else {
+                loadListing();
+            }
+            getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
         if (queue != null) {
             queue.cancelAll(TAG);
         }
     }
-
 
 }

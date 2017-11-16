@@ -18,43 +18,53 @@
             android:textSize="14sp"
             tools:textStyle="bold" />
 
-        <ListView
-            android:id="@+id/lvItemList"
+        <TextView
+            android:id="@+id/tvItem1"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.72"
-            android:divider="@android:drawable/bottom_bar"
-            android:dividerHeight="1dp"
-            android:scrollbars="horizontal|vertical" />
+            android:layout_height="wrap_content"
+            android:layout_weight="0.08"
+            android:text="@string/item1"
+            android:textColor="@color/labelColor"
+            android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/tvEmpty"
+            android:id="@+id/tvItem1.1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.08" />
-
-        <TextView
-            android:id="@+id/tvSelection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/selectLabel"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/etInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/etTitle" />
+            android:layout_weight="0.08"
+            android:text="@string/item1.1"
+            android:textColor="@color/labelColor"
+            android:textSize="24sp" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btn3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btnOK" />
+            android:text="@string/btnR" />
+
+        <TextView
+            android:id="@+id/tvItem2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.08"
+            android:text="@string/item2"
+            android:textColor="@color/labelColor"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tvItem2.1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.08"
+            android:text="@string/item2.1"
+            android:textColor="@color/labelColor"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/btn4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btnR" />
 
     </LinearLayout>
 </FrameLayout>

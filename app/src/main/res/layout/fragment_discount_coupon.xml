@@ -18,53 +18,54 @@
             android:textSize="14sp"
             android:textStyle="bold" />
 
-        <ListView
-            android:id="@+id/lvCouponList"
+        <TextView
+            android:id="@+id/tvCoupon1"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.71"
-            android:divider="@android:drawable/bottom_bar"
-            android:dividerHeight="1dp"
-            android:scrollbars="horizontal|vertical" />
+            android:layout_height="wrap_content"
+            android:layout_weight="0.08"
+            android:text="@string/coupon1"
+            android:textColor="@color/labelColor"
+            android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/tvEmpty"
+            android:id="@+id/tvCoupon1.1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.08" />
-
-        <TextView
-            android:id="@+id/tvSelection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/selectLabel"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/etInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="@string/etTitle" />
+            android:layout_weight="0.08"
+            android:text="@string/coupon1.1"
+            android:textColor="@color/labelColor"
+            android:textSize="24sp" />
 
         <Button
-            android:id="@+id/btnOK"
+            android:id="@+id/btn1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btnOK" />
+            android:onClick="btnRedeem5"
+            android:text="@string/btnR" />
 
         <TextView
-            android:id="@+id/tvPromptDiscCode"
+            android:id="@+id/tvCoupon2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.06"
-            android:text="@string/code"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            android:visibility="visible" />
+            android:layout_weight="0.08"
+            android:text="@string/coupon2"
+            android:textColor="@color/labelColor"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tvCoupon2.2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.08"
+            android:text="@string/coupon2.1"
+            android:textColor="@color/labelColor"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/btn2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btnR" />
 
     </LinearLayout>
     <!-- <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -36,16 +36,16 @@ public class RedemptionAdapter extends ArrayAdapter<Redemption> {
 
         View rowView = inflater.inflate(R.layout.redeem_product_record, parent, false);
 
-        TextView tvRewardID, tvPointNeeded, tvAmountAvailable;
+        TextView tv_product_name, tv_point_required , tv_availability;
         ImageView ivRewardImage;
 
-        tvRewardID = (TextView) rowView.findViewById(R.id.tv_product_name);
-        tvPointNeeded = (TextView) rowView.findViewById(R.id.tv_point_required);
-        tvAmountAvailable = (TextView) rowView.findViewById(R.id.tv_availability);
+        tv_product_name = (TextView) rowView.findViewById(R.id.tv_product_name);
+        tv_point_required = (TextView) rowView.findViewById(R.id.tv_point_required);
+        tv_availability = (TextView) rowView.findViewById(R.id.tv_availability);
 
-        tvRewardID.setText(tvRewardID.getText() + ":" + reward.getRewardTitle());
-        tvPointNeeded.setText(tvPointNeeded.getText() + ":" + reward.getPointNeeded());
-        tvAmountAvailable.setText(tvAmountAvailable.getText() + ":" + reward.getAmountAvailable());
+        tv_product_name.setText(tv_product_name.getText() + ":" + reward.getProductName());
+        tv_point_required.setText(tv_point_required.getText() + ":" + reward.getPointNeeded());
+        tv_availability.setText( tv_availability .getText() + ":" + reward.getAmountAvailable());
         return rowView;
     }
 

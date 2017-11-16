@@ -10,28 +10,28 @@
         android:text="@string/his_redeemID" />
 
     <TextView
-        android:id="@+id/tvItemName"
+        android:id="@+id/tvDesc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/his_redeemItemName" />
+        android:text="@string/his_Desc" />
 
     <TextView
-        android:id="@+id/tvPointUsed"
+        android:id="@+id/tvCouponCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/his_pointsUsed" />
+        android:text="@string/his_CouponCode" />
 
     <TextView
-        android:id="@+id/tvUserName"
+        android:id="@+id/tvCreateAt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/his_userName" />
+        android:text="@string/his_CreateAt" />
 
     <TextView
-        android:id="@+id/tvMercID"
+        android:id="@+id/tvWalletID"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/his_MerID" />
+        android:text="@string/his_WalletID" />
 
     <TextView
         android:id="@+id/tvRedeemDate"

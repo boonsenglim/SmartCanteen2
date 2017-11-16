@@ -33,7 +33,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/pointsTitle"
+                android:textStyle="bold"
                 android:textSize="18sp"
+                android:textAlignment="center"
                 tools:textAlignment="center"
                 tools:textColor="@android:color/black"
                 tools:textStyle="bold" />
@@ -44,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/totalPoints"
                 android:textSize="50sp"
+                android:textAlignment="center"
                 tools:textAlignment="center" />
 
             <TextView

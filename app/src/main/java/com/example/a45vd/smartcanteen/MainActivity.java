@@ -32,6 +32,7 @@ package com.example.a45vd.smartcanteen;
         import com.android.volley.toolbox.Volley;
 /*      import com.example.user.myApp.database.Listing;
         import com.example.user.myApp.database.ListingAdapter;*/
+        import com.example.a45vd.smartcanteen.database.History;
         import com.example.a45vd.smartcanteen.database.Member;
         import com.google.zxing.integration.android.IntentIntegrator;
         import com.google.zxing.integration.android.IntentResult;
@@ -47,16 +48,12 @@ package com.example.a45vd.smartcanteen;
         import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    public static String WalletID = "6";
+    public static String WalletID = "s2";
     public static String email;
     public static double Balance=0;
     public static int LoyaltyPoint=0;
-/*    public static Listing entrySelected;
-
-    public static List<Listing> lList = null;
-    public static List<Listing> tlList = null;*/
-
-
+    public static String DiscCode = null;
+    public static List<History> hList = null;
     TextView tvBalance;
 
     static final int TOP_UP_REQUEST = 1;
@@ -191,32 +188,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    //Used to select an item programmatically
-    //bottomNavigationView.getMenu().getItem(2).setChecked(true);
 
-/*    public void goTopUp(View view) {
-        Intent intent = new Intent(this, topUp.class);
-        startActivityForResult(intent, TOP_UP_REQUEST);
-    }
-
-    public void goExpenses(View view) {
-        Intent intent = new Intent(this, TrackExpenses.class);
-        startActivity(intent);
-    }
-
-    public void goCreateListing(View view) {
-        Intent intent = new Intent(this, CreateListing.class);
-        startActivity(intent);
-    }
-
-    public void goListingDetail(View view) {
-        Intent intent = new Intent(this, ListingDetail.class);
-        startActivity(intent);
-    }
-
-    public void startScan(View view) {
-        new IntentIntegrator(this).initiateScan(); // `this` is the current Activity
-    }*/
 
 
 

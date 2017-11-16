@@ -61,9 +61,9 @@ public class FragmentHome extends Fragment {
             tvBalance.setText(MainActivity.LoyaltyPoint+"");
         return rootView;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
     }
 
@@ -150,7 +150,7 @@ public class FragmentHome extends Fragment {
                                     MainActivity.LoyaltyPoint = jsonObject.getInt("LoyaltyPoint");
                                     if (MainActivity.LoyaltyPoint > entry.getPointNeeded()) {
                                         allowRefresh = true;
-                                        String entryRewardID = String.valueOf(entry.getRewardID());
+                                        String entryRewardID = String.valueOf(entry.getProductName());
                                         insertRedeem(getActivity().getApplicationContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redemption.php", entryRewardID, MainActivity.WalletID);
                                         MainActivity.LoyaltyPoint -= entry.getPointNeeded();
                                         tvRewardBalance.setText(MainActivity.LoyaltyPoint + "");

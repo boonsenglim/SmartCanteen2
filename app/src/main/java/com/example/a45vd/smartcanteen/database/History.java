@@ -2,62 +2,60 @@ package com.example.a45vd.smartcanteen.database;
 
 public class History {
 
-    private static String TransactionDate;
-    private static String WalletID;
-    private static String ItemName;
-    private static String Seller;
-    private String Price;
+    private  int RedeemCodeID;
+    private  String Description;
+    private  String CouponCode;
+    private  String CreateAt;
+    private  String WalletID;
+    private  String RedeemDate;
 
+    public History(int redeemCodeID, String desc, String couponCode, String createAt, String walletID, String redeemDate) {
 
-    public History(String transactionDate, String WalletID, String itemName, String seller, String price) {
-        TransactionDate = transactionDate;
-        WalletID = WalletID;
-        ItemName = itemName;
-        //Seller = seller;
-        Price = price;
+        RedeemCodeID = redeemCodeID;
+        Description = desc;
+        CouponCode = couponCode;
+        CreateAt = createAt;
+        WalletID = walletID;
+        RedeemDate = redeemDate;
     }
 
-    public static String getTransactionDate() {
-        return TransactionDate;
+    public int getRedeemCodeID() {return RedeemCodeID; }
+
+    public void setRedeemCodeID(int redeemCodeID) { RedeemCodeID = redeemCodeID; }
+
+    public String getWalletID() {return WalletID; }
+
+    public void setWalletID(String walletID) { WalletID = walletID; }
+
+    public String getDescription() {
+        return Description;
     }
 
-    public void setTransactionDate(String transactionDate) {
-
-        TransactionDate = transactionDate;
+    public void setDescription(String desc) {
+        Description = desc;
     }
 
-    public static String getWalletID() {
-
-        return WalletID;
+    public String getCreateAt() {
+        return CreateAt;
     }
 
-    public void setWalletID(String WalletID) {
-
-        WalletID = WalletID;
+    public void setCreateAt(String createAt) {
+        CreateAt = createAt;
     }
 
-    public static String getItemName() {
-        return ItemName;
+    public String getCouponCode() {
+        return CouponCode;
     }
 
-    public void setItemName(String itemName) {
-        this.ItemName = itemName;
+    public void setCouponCode(String couponCode) {
+        CouponCode = couponCode;
     }
 
-/*    public static String getSeller() {
-        return Seller;
+    public String getRedeemDate() {
+        return RedeemDate;
     }
 
-    public void setSeller(String seller) {
-
-        Seller = seller;
-    }*/
-
-    public String getPrice() {
-        return Price;
-    }
-
-    public void setPrice(String price) {
-        Price = price;
+    public void setRedeemDate(String redeemDate) {
+        RedeemDate = redeemDate;
     }
 }

@@ -61,11 +61,10 @@ public class FragmentItem extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_discount_coupon, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_item, container, false);
         //tvRewardBalance = (TextView) rootView.findViewById(R.id.tvRewardBalance);
         //tvRewardBalance.setText("" + MainActivity.LoyaltyPoint);
         allowRefresh = false;
-        listViewReward = (ListView) rootView.findViewById(R.id.lvCouponList);
         RList = new ArrayList<>();
         downloadListing(getActivity().getApplicationContext(), GET_URL);
 
@@ -223,7 +222,7 @@ public class FragmentItem extends Fragment{
                                     MainActivity.LoyaltyPoint = jsonObject.getInt("RewardPoint");
                                     if (MainActivity.LoyaltyPoint > entry.getPointNeeded()) {
                                         allowRefresh = true;
-                                        String entryRewardID = String.valueOf(entry.getRewardID());
+                                        String entryRewardID = String.valueOf(entry.getProductName());
                                         insertRedeem(getActivity().getApplicationContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redeem.php", entryRewardID, MainActivity.WalletID);
                                         MainActivity.LoyaltyPoint -= entry.getPointNeeded();
                                         tvRewardBalance.setText(MainActivity.LoyaltyPoint + "");

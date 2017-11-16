@@ -34,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,7 @@ import java.util.Map;
 //import static com.example.a45vd.smartcanteen.database.History.BuyerID;
 
 
-public class FragmentCoupon extends Fragment {
+public class FragmentCoupon extends Fragment implements View.OnClickListener{
 
     public static final String TAG = "com.example.user.myApp";
     private static String GET_URL = "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_reward.php";
@@ -49,6 +50,7 @@ public class FragmentCoupon extends Fragment {
 
     Button  btnOK;
     TextView tvRewardBalance;
+    Button btn1;
     ListView listViewReward;
     List<Redemption> RList;
     RequestQueue queue;
@@ -62,7 +64,7 @@ public class FragmentCoupon extends Fragment {
 
     public void onSelectClick(View v) {
 
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        DialogInterface.OnClickListener dialogClickListener =new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
@@ -88,7 +90,6 @@ public class FragmentCoupon extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
     }
 
@@ -98,27 +99,14 @@ public class FragmentCoupon extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_discount_coupon, container, false);
         //tvRewardBalance = (TextView) rootView.findViewById(R.id.tvBalance);
         //tvRewardBalance.setText("" + MainActivity.LoyaltyPoint);
-        tvPromptDiscCode = (TextView) rootView.findViewById(R.id.tvPromptDiscCode);
         allowRefresh = false;
-        listViewReward = (ListView) rootView.findViewById(R.id.lvCouponList);
         RList = new ArrayList<>();
         downloadListing(getActivity().getApplicationContext(), GET_URL);
 
-        listViewReward.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Redemption entry = (Redemption) parent.getItemAtPosition(position);
-                checkBalanceThenInsert(getActivity(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php", entry);
+        btn1 = (Button) rootView.findViewById(R.id.btn1);
 
-            }
-        });
+        btn1.setOnClickListener(this);
         return rootView;
-
-/*        if (MainActivity.username.equals(????)) {
-            tvPromptDiscCode.setVisibility(View.VISIBLE);
-        } else {
-            tvPromptDiscCode.setVisibility(View.GONE);
-        }*/
 
     }
 
@@ -264,7 +252,7 @@ public class FragmentCoupon extends Fragment {
                                     MainActivity.LoyaltyPoint = jsonObject.getInt("RewardPoint");
                                     if (MainActivity.LoyaltyPoint > entry.getPointNeeded()) {
                                         allowRefresh = true;
-                                        String entryRewardID = String.valueOf(entry.getRewardID());
+                                        String entryRewardID = String.valueOf(entry.getProductName());
                                         insertRedeem(getActivity().getApplicationContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redeem.php", entryRewardID, MainActivity.WalletID);
                                         MainActivity.LoyaltyPoint -= entry.getPointNeeded();
                                         tvRewardBalance.setText(MainActivity.LoyaltyPoint + "");
@@ -323,4 +311,114 @@ public class FragmentCoupon extends Fragment {
             queue.cancelAll(TAG);
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        Date timenow = new Date();
+
+        switch (v.getId()) {
+            case R.id.btn1:
+                if (MainActivity.LoyaltyPoint >= 500){
+                    MainActivity.LoyaltyPoint -= 500;
+                    try {
+                        String discCode = 5 + timenow.getTime() + MainActivity.WalletID;
+                        String desc = "RM 5 discount";
+                        update(getContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/update_point.php");
+                        insert(getContext() , "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redemption.php",discCode,desc);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    Toast.makeText(getActivity(), "Not enough points", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void update(Context context, String url) {
+        //mPostCommentResponse.requestStarted();
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        //Send data
+        try {
+            StringRequest postRequest = new StringRequest(
+                    Request.Method.POST,
+                    url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("loyaltypoint", String.valueOf(MainActivity.LoyaltyPoint));
+                    params.put("walletID", String.valueOf(MainActivity.WalletID));
+                    return params;
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("Content-Type", "application/x-www-form-urlencoded");
+                    return params;
+                }
+            };
+            queue.add(postRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insert(Context context, String url, final String disCode, final String desc) {
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        //Send data
+        try {
+            StringRequest postRequest = new StringRequest(
+                    Request.Method.POST,
+                    url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("Description",desc);
+                    params.put("couponCode", disCode);
+                    params.put("WalletID", MainActivity.WalletID);
+                    return params;
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("Content-Type", "application/x-www-form-urlencoded");
+                    return params;
+                }
+            };
+            queue.add(postRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

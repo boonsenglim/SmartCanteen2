@@ -2,6 +2,7 @@ package com.example.a45vd.smartcanteen.database;
 
         import android.app.Activity;
         import android.content.Context;
+        import android.app.ProgressDialog;
         import android.graphics.Color;
         import android.support.constraint.ConstraintLayout;
         import android.support.v4.content.ContextCompat;
@@ -16,7 +17,9 @@ package com.example.a45vd.smartcanteen.database;
         import com.example.a45vd.smartcanteen.database.Redemption;
 
         import java.util.List;
-
+        import java.io.IOException;
+        import java.net.URL;
+        import java.util.List;
 
 
 public class HistoryAdapter extends ArrayAdapter<History>{
@@ -27,30 +30,29 @@ public class HistoryAdapter extends ArrayAdapter<History>{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        History member = getItem(position);
+        History history = getItem(position);
 
         LayoutInflater inflater  = (LayoutInflater) getContext()
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View rowView = inflater.inflate(R.layout.history_record, parent, false);
 
-        TextView tvItemName, tvMercID, tvRedeemDate, tvUserName;
+        TextView tvRedeemID, tvDesc, tvRedeemDate, tvWalletID,tvCouponCode,tvCreateAt;
 
 
-        tvItemName = (TextView) rowView.findViewById(R.id.tvItemName);
-        tvMercID = (TextView) rowView.findViewById(R.id.tvMercID);
+        tvRedeemID = (TextView) rowView.findViewById(R.id.tvRedeemID);
+        tvDesc = (TextView) rowView.findViewById(R.id.tvDesc);
+        tvCouponCode = (TextView) rowView.findViewById(R.id.tvCouponCode);
         tvRedeemDate = (TextView) rowView.findViewById(R.id.tvRedeemDate);
-        tvUserName = (TextView)rowView.findViewById(R.id.tvUserName);
+        tvWalletID = (TextView)rowView.findViewById(R.id.tvWalletID);
+        tvCreateAt = (TextView)rowView.findViewById(R.id.tvCreateAt);
 
-        tvItemName.setText(History.getItemName());
-       // tvMercID.setText(History.getSeller());
-        tvUserName.setText(History.getWalletID());
-        tvRedeemDate.setText(History.getTransactionDate());
-
-//       ConstraintLayout layout = (ConstraintLayout) rowView.findViewById(R.id.layoutTransaction);
-
- /*       if (History.getBuyerID().equals(MainActivity.username))
-            layout.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorOut));*/
+        tvRedeemID.setText(tvRedeemID.getText() + ":" + history.getRedeemCodeID());
+        tvDesc.setText(tvDesc.getText() + ":" + history.getDescription());
+        tvCouponCode.setText(tvCouponCode.getText() + ":" + history.getCouponCode());
+        tvWalletID.setText(tvWalletID.getText() + ":" + history.getWalletID());
+        tvRedeemDate.setText(tvRedeemDate.getText() + ":" + history.getRedeemDate());
+        tvCreateAt.setText(tvCreateAt.getText() + ":" + history.getCreateAt());
 
         return rowView;
     }
