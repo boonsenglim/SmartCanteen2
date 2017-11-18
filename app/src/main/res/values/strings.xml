@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Smart Canteen</string>
+    <string name="walletid">WalletID</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
     <string name="Home">Home</string>
     <string name="Coupon">Coupon</string>
     <string name="giftCard">Gift Card</string>
@@ -23,15 +26,13 @@
     <string name="his_RedeemDate">Redeem Date</string>
     <string name="selectLabel">Selection: </string>
     <string name="etTitle">Input Here!</string>
-    <string name="btnR">Redeeem</string>
-    <string name="code">*Discount Code</string>
+    <string name="btnR">Redeem</string>
     <string name="item1">Item Name: Reload Card RM10 </string>
     <string name="item1.1">Point Used: 1500pts</string>
     <string name="item2">Item Name: Gift Card RM10 </string>
-    <string name="item2.1">Point Used: 5000pts</string>
+    <string name="item2.1">Point Used: 2000pts</string>
     <string name="coupon1">Coupon Name: RM5 discount </string>
     <string name="coupon1.1">Point Used: 500pts</string>
     <string name="coupon2">Coupon Name: RM10 discount </string>
     <string name="coupon2.1">Point Used: 1000pts</string>
-    <!--c-->
 </resources>

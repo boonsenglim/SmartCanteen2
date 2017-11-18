@@ -1,13 +1,12 @@
 package com.example.a45vd.smartcanteen;
 
         import android.support.v4.app.Fragment;
-        import android.support.v4.app.FragmentTransaction;
         import android.content.Context;
         import android.os.Bundle;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
-        import android.widget.AdapterView;
+        import android.widget.Button;
         import android.widget.ListView;
         import android.widget.TextView;
         import android.widget.Toast;
@@ -20,7 +19,6 @@ package com.example.a45vd.smartcanteen;
         import com.android.volley.VolleyError;
         import com.android.volley.toolbox.JsonArrayRequest;
         import com.android.volley.toolbox.StringRequest;
-        import com.android.volley.toolbox.Volley;
 
         import com.example.a45vd.smartcanteen.database.Redemption;
         import com.example.a45vd.smartcanteen.database.RedemptionAdapter;
@@ -30,21 +28,24 @@ package com.example.a45vd.smartcanteen;
         import org.json.JSONObject;
 
         import java.util.ArrayList;
+        import java.util.Date;
         import java.util.HashMap;
         import java.util.List;
         import java.util.Map;
 
 
 
-public class FragmentItem extends Fragment{
+public class FragmentItem extends Fragment implements View.OnClickListener{
 
     public static final String TAG = "com.example.user.myApp";
-    private static String GET_URL = "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_reward.php";
+    private static String GET_URL = "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_reward_item.php";
     public static boolean allowRefresh;
 
+    Button btn3;
+    Button btn4;
     TextView tvRewardBalance;
     ListView listViewReward;
-    List<Redemption> RList;
+    List<Redemption> IList;
     RequestQueue queue;
 
     public static FragmentItem newInstance() {
@@ -62,20 +63,18 @@ public class FragmentItem extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_item, container, false);
-        //tvRewardBalance = (TextView) rootView.findViewById(R.id.tvRewardBalance);
-        //tvRewardBalance.setText("" + MainActivity.LoyaltyPoint);
+
         allowRefresh = false;
-        RList = new ArrayList<>();
+        IList = new ArrayList<>();
         downloadListing(getActivity().getApplicationContext(), GET_URL);
 
-        listViewReward.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Redemption entry = (Redemption) parent.getItemAtPosition(position);
-                checkBalanceThenInsert(getActivity(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php", entry);
+        btn3 = (Button) rootView.findViewById(R.id.btn3);
+        btn3.setOnClickListener(this);
 
-            }
-        });
+        btn4 = (Button) rootView.findViewById(R.id.btn4);
+        btn4.setOnClickListener(this);
+
+
         return rootView;
 
     }
@@ -146,7 +145,7 @@ public class FragmentItem extends Fragment{
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
-                            RList.clear();
+                            IList.clear();
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject rewardResponse = (JSONObject) response.get(i);
                                 int RewardID = Integer.parseInt(rewardResponse.getString("RewardID"));
@@ -154,7 +153,7 @@ public class FragmentItem extends Fragment{
                                 int AmountAvailable = Integer.parseInt(rewardResponse.getString("AmountAvailable"));
                                 String rewardTitle = rewardResponse.getString("RewardTitle");
                                 Redemption reward = new Redemption(RewardID, PointNeeded, AmountAvailable, rewardTitle);
-                                RList.add(reward);
+                                IList.add(reward);
                             }
                             loadListing();
 
@@ -179,7 +178,7 @@ public class FragmentItem extends Fragment{
     }
 
     private void loadListing() {
-        final RedemptionAdapter adapter = new RedemptionAdapter(getActivity(), R.layout.fragment_item, RList);
+        final RedemptionAdapter adapter = new RedemptionAdapter(getActivity(), R.layout.fragment_item, IList);
         listViewReward.setAdapter(adapter);
         //Toast.makeText(getActivity(), "Count :" + RList.size(), Toast.LENGTH_LONG).show();
     }
@@ -189,7 +188,7 @@ public class FragmentItem extends Fragment{
         super.onResume();
         if (allowRefresh) {
             allowRefresh = false;
-            tvRewardBalance.setText("" + MainActivity.LoyaltyPoint);
+            tvRewardBalance.setText("" + RedeemMainActivity.LoyaltyPoint);
             downloadListing(getActivity().getApplicationContext(), GET_URL);
             getFragmentManager().beginTransaction().detach(this).attach(this).commit();
         }
@@ -218,14 +217,14 @@ public class FragmentItem extends Fragment{
                                     Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
                                 } else if (success == 1) {
-                                    MainActivity.Balance = jsonObject.getDouble("balance");
-                                    MainActivity.LoyaltyPoint = jsonObject.getInt("RewardPoint");
-                                    if (MainActivity.LoyaltyPoint > entry.getPointNeeded()) {
+                                    RedeemMainActivity.Balance = jsonObject.getDouble("balance");
+                                    RedeemMainActivity.LoyaltyPoint = jsonObject.getInt("RewardPoint");
+                                    if (RedeemMainActivity.LoyaltyPoint > entry.getPointNeeded()) {
                                         allowRefresh = true;
                                         String entryRewardID = String.valueOf(entry.getProductName());
-                                        insertRedeem(getActivity().getApplicationContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redeem.php", entryRewardID, MainActivity.WalletID);
-                                        MainActivity.LoyaltyPoint -= entry.getPointNeeded();
-                                        tvRewardBalance.setText(MainActivity.LoyaltyPoint + "");
+                                        insertRedeem(getActivity().getApplicationContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redeem.php", entryRewardID, RedeemMainActivity.WalletID);
+                                        RedeemMainActivity.LoyaltyPoint -= entry.getPointNeeded();
+                                        tvRewardBalance.setText(RedeemMainActivity.LoyaltyPoint + "");
                                     } else {
                                         Toast.makeText(getActivity().getApplicationContext(), "Insufficient point!", Toast.LENGTH_SHORT).show();
                                     }
@@ -256,7 +255,7 @@ public class FragmentItem extends Fragment{
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
-                    params.put("username", MainActivity.WalletID);
+                    params.put("username", RedeemMainActivity.WalletID);
                     return params;
                 }
 
@@ -281,4 +280,132 @@ public class FragmentItem extends Fragment{
             queue.cancelAll(TAG);
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        Date timenow = new Date();
+
+        switch (v.getId()) {
+            case R.id.btn3:
+                if (RedeemMainActivity.LoyaltyPoint >= 1500){
+                    RedeemMainActivity.LoyaltyPoint -= 1500;
+                    try {
+                        String itCode = "RC" + timenow.getTime() + RedeemMainActivity.WalletID;
+                        String desc = "RM 10 Reload Card";
+                        update(getContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/update_point.php");
+                        insert(getContext() , "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redemption_item.php",itCode,desc);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    Toast.makeText(getActivity(), "Not enough points", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case R.id.btn4:
+                if (RedeemMainActivity.LoyaltyPoint >= 2000){
+                    RedeemMainActivity.LoyaltyPoint -= 2000;
+                    try {
+                        String itCode = "GC" + timenow.getTime() + RedeemMainActivity.WalletID;
+                        String desc = "RM 10 Gift Card";
+                        update(getContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/update_point.php");
+                        insert(getContext() , "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redemption_item.php",itCode,desc);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    Toast.makeText(getActivity(), "Not enough points", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void update(Context context, String url) {
+        //mPostCommentResponse.requestStarted();
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        //Send data
+        try {
+            StringRequest postRequest = new StringRequest(
+                    Request.Method.POST,
+                    url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("LoyaltyPoint", String.valueOf(RedeemMainActivity.LoyaltyPoint));
+                    params.put("WalletID", String.valueOf(RedeemMainActivity.WalletID));
+                    return params;
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("Content-Type", "application/x-www-form-urlencoded");
+                    return params;
+                }
+            };
+            queue.add(postRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insert(Context context, String url, final String itCode, final String desc) {
+
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        //Send data
+        try {
+            StringRequest postRequest = new StringRequest(
+                    Request.Method.POST,
+                    url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("Description",desc);
+                    params.put("ItemCode", itCode);
+                    params.put("WalletID", RedeemMainActivity.WalletID);
+                    return params;
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("Content-Type", "application/x-www-form-urlencoded");
+                    return params;
+                }
+            };
+            queue.add(postRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

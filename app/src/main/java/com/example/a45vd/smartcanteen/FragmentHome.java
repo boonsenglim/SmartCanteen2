@@ -1,15 +1,11 @@
 package com.example.a45vd.smartcanteen;
 
-        import android.app.ProgressDialog;
         import android.content.Context;
         import android.os.Bundle;
         import android.support.v4.app.Fragment;
-        import android.support.v4.app.FragmentTransaction;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
-        import android.widget.AdapterView;
-        import android.widget.ListView;
         import android.widget.TextView;
         import android.widget.Toast;
 
@@ -18,28 +14,22 @@ package com.example.a45vd.smartcanteen;
         import com.android.volley.RequestQueue;
         import com.android.volley.Response;
         import com.android.volley.VolleyError;
-        import com.android.volley.toolbox.JsonArrayRequest;
         import com.android.volley.toolbox.StringRequest;
         import com.android.volley.toolbox.Volley;
         import com.example.a45vd.smartcanteen.database.Redemption;
 
-        import org.json.JSONArray;
         import org.json.JSONException;
         import org.json.JSONObject;
 
-        import java.util.ArrayList;
         import java.util.HashMap;
-        import java.util.List;
         import java.util.Map;
-
-        import static com.example.a45vd.smartcanteen.MainActivity.WalletID;
 
 
 public class FragmentHome extends Fragment {
 
     //Reward list
     public static final String TAG = "com.example.user.myApp";
-    private static String GET_URL = "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_redemption.php";
+    private static String GET_URL = "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_reward.php";
     public static boolean allowRefresh;
 
     TextView tvRewardBalance;
@@ -58,7 +48,7 @@ public class FragmentHome extends Fragment {
 
         tvBalance = (TextView) rootView.findViewById(R.id.tvBalance1);
         if (tvBalance != null)
-            tvBalance.setText(MainActivity.LoyaltyPoint+"");
+            tvBalance.setText(RedeemMainActivity.LoyaltyPoint+"");
         return rootView;
     }
     @Override
@@ -146,14 +136,14 @@ public class FragmentHome extends Fragment {
                                     Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
                                 } else if (success == 1) {
-                                    MainActivity.Balance = jsonObject.getDouble("Balance");
-                                    MainActivity.LoyaltyPoint = jsonObject.getInt("LoyaltyPoint");
-                                    if (MainActivity.LoyaltyPoint > entry.getPointNeeded()) {
+                                    RedeemMainActivity.Balance = jsonObject.getDouble("Balance");
+                                    RedeemMainActivity.LoyaltyPoint = jsonObject.getInt("LoyaltyPoint");
+                                    if (RedeemMainActivity.LoyaltyPoint > entry.getPointNeeded()) {
                                         allowRefresh = true;
                                         String entryRewardID = String.valueOf(entry.getProductName());
-                                        insertRedeem(getActivity().getApplicationContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redemption.php", entryRewardID, MainActivity.WalletID);
-                                        MainActivity.LoyaltyPoint -= entry.getPointNeeded();
-                                        tvRewardBalance.setText(MainActivity.LoyaltyPoint + "");
+                                        insertRedeem(getActivity().getApplicationContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redemption.php", entryRewardID, RedeemMainActivity.WalletID);
+                                        RedeemMainActivity.LoyaltyPoint -= entry.getPointNeeded();
+                                        tvRewardBalance.setText(RedeemMainActivity.LoyaltyPoint + "");
                                     } else {
                                         Toast.makeText(getActivity().getApplicationContext(), "Insufficient points!", Toast.LENGTH_SHORT).show();
                                     }
@@ -184,7 +174,7 @@ public class FragmentHome extends Fragment {
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
-                    params.put("WalletID", MainActivity.WalletID);
+                    params.put("WalletID", RedeemMainActivity.WalletID);
                     return params;
                 }
 

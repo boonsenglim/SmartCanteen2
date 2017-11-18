@@ -1,9 +1,6 @@
 package com.example.a45vd.smartcanteen;
 
-        import android.content.Intent;
-        import android.graphics.Bitmap;
         import android.support.v4.app.Fragment;
-        import android.app.ProgressDialog;
         import android.content.Context;
         import android.net.ConnectivityManager;
         import android.net.NetworkInfo;
@@ -12,30 +9,23 @@ package com.example.a45vd.smartcanteen;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.AdapterView;
-        import android.widget.ImageView;
         import android.widget.ListView;
         import android.widget.Toast;
 
-        import com.android.volley.AuthFailureError;
-        import com.android.volley.Request;
         import com.android.volley.RequestQueue;
         import com.android.volley.Response;
         import com.android.volley.VolleyError;
         import com.android.volley.toolbox.JsonArrayRequest;
-        import com.android.volley.toolbox.StringRequest;
         import com.android.volley.toolbox.Volley;
         import com.example.a45vd.smartcanteen.database.History;
         import com.example.a45vd.smartcanteen.database.HistoryAdapter;
 
 
         import org.json.JSONArray;
-        import org.json.JSONException;
         import org.json.JSONObject;
 
         import java.util.ArrayList;
-        import java.util.HashMap;
         import java.util.List;
-        import java.util.Map;
 
 
 public class FragmentHistory extends Fragment {
@@ -45,7 +35,6 @@ public class FragmentHistory extends Fragment {
 
     ListView lvHistory;
     List<History> HistoryList;
-    private ProgressDialog pDialog;
 
     RequestQueue queue;
 
@@ -64,7 +53,6 @@ public class FragmentHistory extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_history, container, false);
         allowRefresh = false;
         lvHistory = (ListView) rootView.findViewById(R.id.lvHistory);
-        pDialog = new ProgressDialog(getActivity());
         HistoryList = new ArrayList<>();
         downloadListing(getActivity().getApplicationContext(), GET_HISTORY_URL);
 
@@ -73,28 +61,10 @@ public class FragmentHistory extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 History entry = (History) parent.getItemAtPosition(position);
                 downloadListing(getActivity(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/get_history.php");
+
             }
         });
 
- /*       lvHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                History entry = (History) parent.getItemAtPosition(position);
-                Intent intent = new Intent(getActivity(), .class);
-                intent.putExtra("RedeemCodeID", entry.getRedeemCodeID());
-                intent.putExtra("Description", entry.getDescription());
-                intent.putExtra("Discount Code", entry.getCouponCode());
-                intent.putExtra("createAt", entry.getCreateAt());
-                intent.putExtra("WalletID", entry.getWalletID());
-                intent.putExtra("Redeem Date", entry.getRedeemDate());
-
-                startActivity(intent);
-            }
-        });*/
-
-/*        if (!isConnected()) {
-            Toast.makeText(getActivity().getApplicationContext(), "No network", Toast.LENGTH_LONG).show();
-        }*/
 
         return rootView;
 
@@ -124,10 +94,10 @@ public class FragmentHistory extends Fragment {
                                         JSONObject historyResponse = (JSONObject) response.get(i);
                                         int redeemCodeID = Integer.parseInt(historyResponse.getString("RedeemCodeID"));
                                         String desc = historyResponse.getString("Description");
-                                        String couponCode = historyResponse.getString("Discount Code");
-                                        String createAt = historyResponse.getString("Date Create");
+                                        String couponCode = historyResponse.getString("CouponCode");
+                                        String createAt = historyResponse.getString("createAt");
                                         String walletID = historyResponse.getString("WalletID");
-                                        String redeemDate = historyResponse.getString("Redeem Date");
+                                        String redeemDate = historyResponse.getString("RedeemDate");
                                         History history = new History(redeemCodeID, desc, couponCode, createAt, walletID, redeemDate);
                                         HistoryList.add(history);
                                     }
@@ -167,8 +137,8 @@ public class FragmentHistory extends Fragment {
         super.onResume();
         if (allowRefresh) {
             allowRefresh = false;
-            if (MainActivity.hList == null) {
-                MainActivity.hList = new ArrayList<>();
+            if (RedeemMainActivity.hList == null) {
+                RedeemMainActivity.hList = new ArrayList<>();
                 downloadListing(getActivity().getApplicationContext(), GET_HISTORY_URL);
             } else {
                 loadListing();

@@ -2,13 +2,11 @@ package com.example.a45vd.smartcanteen;
 
 import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,7 +22,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import com.example.a45vd.smartcanteen.database.Redemption;
 import com.example.a45vd.smartcanteen.database.RedemptionAdapter;
@@ -39,7 +36,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//import static com.example.a45vd.smartcanteen.database.History.BuyerID;
 
 
 public class FragmentCoupon extends Fragment implements View.OnClickListener{
@@ -48,14 +44,12 @@ public class FragmentCoupon extends Fragment implements View.OnClickListener{
     private static String GET_URL = "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_reward.php";
     public static boolean allowRefresh;
 
-    Button  btnOK;
     TextView tvRewardBalance;
     Button btn1;
+    Button btn2;
     ListView listViewReward;
     List<Redemption> RList;
     RequestQueue queue;
-    TextView tvPromptDiscCode;
-    String RedemptionID;
 
     public static FragmentCoupon newInstance() {
         FragmentCoupon fragment = new FragmentCoupon();
@@ -71,8 +65,8 @@ public class FragmentCoupon extends Fragment implements View.OnClickListener{
                     case DialogInterface.BUTTON_POSITIVE:
                         dialog.dismiss();
                         //Fragment.allowRefresh = true;
-/*                        MainActivity.tlList = null;
-                        MainActivity.lList = null;
+/*                        RedeemMainActivity.tlList = null;
+                        RedeemMainActivity.lList = null;
                         break;*/
 
                     case DialogInterface.BUTTON_NEGATIVE:
@@ -97,15 +91,16 @@ public class FragmentCoupon extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_discount_coupon, container, false);
-        //tvRewardBalance = (TextView) rootView.findViewById(R.id.tvBalance);
-        //tvRewardBalance.setText("" + MainActivity.LoyaltyPoint);
         allowRefresh = false;
         RList = new ArrayList<>();
         downloadListing(getActivity().getApplicationContext(), GET_URL);
 
         btn1 = (Button) rootView.findViewById(R.id.btn1);
-
         btn1.setOnClickListener(this);
+
+        btn2 = (Button) rootView.findViewById(R.id.btn2);
+        btn2.setOnClickListener(this);
+
         return rootView;
 
     }
@@ -209,7 +204,7 @@ public class FragmentCoupon extends Fragment implements View.OnClickListener{
     }
 
     private void loadListing() {
-        final RedemptionAdapter adapter = new RedemptionAdapter(getActivity(), R.layout.fragment_item, RList);
+        final RedemptionAdapter adapter = new RedemptionAdapter(getActivity(), R.layout.fragment_discount_coupon, RList);
         listViewReward.setAdapter(adapter);
         //Toast.makeText(getActivity(), "Count :" + RList.size(), Toast.LENGTH_LONG).show();
     }
@@ -219,7 +214,7 @@ public class FragmentCoupon extends Fragment implements View.OnClickListener{
         super.onResume();
         if (allowRefresh) {
             allowRefresh = false;
-            tvRewardBalance.setText("" + MainActivity.LoyaltyPoint);
+            tvRewardBalance.setText("" + RedeemMainActivity.LoyaltyPoint);
             downloadListing(getActivity().getApplicationContext(), GET_URL);
             getFragmentManager().beginTransaction().detach(this).attach(this).commit();
         }
@@ -248,14 +243,14 @@ public class FragmentCoupon extends Fragment implements View.OnClickListener{
                                     Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
                                 } else if (success == 1) {
-                                    MainActivity.Balance = jsonObject.getDouble("balance");
-                                    MainActivity.LoyaltyPoint = jsonObject.getInt("RewardPoint");
-                                    if (MainActivity.LoyaltyPoint > entry.getPointNeeded()) {
+                                    RedeemMainActivity.Balance = jsonObject.getDouble("balance");
+                                    RedeemMainActivity.LoyaltyPoint = jsonObject.getInt("RewardPoint");
+                                    if (RedeemMainActivity.LoyaltyPoint > entry.getPointNeeded()) {
                                         allowRefresh = true;
                                         String entryRewardID = String.valueOf(entry.getProductName());
-                                        insertRedeem(getActivity().getApplicationContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redeem.php", entryRewardID, MainActivity.WalletID);
-                                        MainActivity.LoyaltyPoint -= entry.getPointNeeded();
-                                        tvRewardBalance.setText(MainActivity.LoyaltyPoint + "");
+                                        insertRedeem(getActivity().getApplicationContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redeem.php", entryRewardID, RedeemMainActivity.WalletID);
+                                        RedeemMainActivity.LoyaltyPoint -= entry.getPointNeeded();
+                                        tvRewardBalance.setText(RedeemMainActivity.LoyaltyPoint + "");
                                     } else {
                                         Toast.makeText(getActivity().getApplicationContext(), "Insufficient point!", Toast.LENGTH_SHORT).show();
                                     }
@@ -286,7 +281,7 @@ public class FragmentCoupon extends Fragment implements View.OnClickListener{
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
-                    params.put("username", MainActivity.WalletID);
+                    params.put("username", RedeemMainActivity.WalletID);
                     return params;
                 }
 
@@ -318,13 +313,30 @@ public class FragmentCoupon extends Fragment implements View.OnClickListener{
 
         switch (v.getId()) {
             case R.id.btn1:
-                if (MainActivity.LoyaltyPoint >= 500){
-                    MainActivity.LoyaltyPoint -= 500;
+                if (RedeemMainActivity.LoyaltyPoint >= 500){
+                    RedeemMainActivity.LoyaltyPoint -= 500;
                     try {
-                        String discCode = 5 + timenow.getTime() + MainActivity.WalletID;
+                        String disCode = "5" + timenow.getTime() + RedeemMainActivity.WalletID;
                         String desc = "RM 5 discount";
                         update(getContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/update_point.php");
-                        insert(getContext() , "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redemption.php",discCode,desc);
+                        insert(getContext() , "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redemption.php",disCode,desc);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    Toast.makeText(getActivity(), "Not enough points", Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case R.id.btn2:
+                if (RedeemMainActivity.LoyaltyPoint >= 1000){
+                    RedeemMainActivity.LoyaltyPoint -= 1000;
+                    try {
+                        String disCode = "10" + timenow.getTime() + RedeemMainActivity.WalletID;
+                        String desc = "RM 10 discount";
+                        update(getContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/update_point.php");
+                        insert(getContext() , "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redemption.php",disCode,desc);
                     } catch (Exception e) {
                         e.printStackTrace();
                         Toast.makeText(getContext(), "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
@@ -361,8 +373,8 @@ public class FragmentCoupon extends Fragment implements View.OnClickListener{
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
-                    params.put("loyaltypoint", String.valueOf(MainActivity.LoyaltyPoint));
-                    params.put("walletID", String.valueOf(MainActivity.WalletID));
+                    params.put("LoyaltyPoint", String.valueOf(RedeemMainActivity.LoyaltyPoint));
+                    params.put("WalletID", String.valueOf(RedeemMainActivity.WalletID));
                     return params;
                 }
 
@@ -403,8 +415,8 @@ public class FragmentCoupon extends Fragment implements View.OnClickListener{
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
                     params.put("Description",desc);
-                    params.put("couponCode", disCode);
-                    params.put("WalletID", MainActivity.WalletID);
+                    params.put("CouponCode", disCode);
+                    params.put("WalletID", RedeemMainActivity.WalletID);
                     return params;
                 }
 

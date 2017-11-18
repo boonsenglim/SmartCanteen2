@@ -1,25 +1,25 @@
 package com.example.a45vd.smartcanteen.database;
 
 public class Redemption {
-//    private int RedemptionID;
+   private int RedemptionID;
     private int PointNeeded;
     private int AmountAvailable;
     private String ProductName;
 
     public Redemption(int redemptionID, int pointNeeded, int amountAvailable, String productName) {
-//        RedemptionID = redemptionID;
+        RedemptionID = redemptionID;
         PointNeeded = pointNeeded;
         AmountAvailable = amountAvailable;
         ProductName = productName;
     }
 
-/*    public int getRewardID() {
+   public int getRewardID() {
         return RedemptionID;
     }
 
     public void setRewardID(int rewardID) {
         RedemptionID = rewardID;
-    }*/
+    }
 
     public String getProductName() {
         return ProductName;

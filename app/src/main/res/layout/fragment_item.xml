@@ -40,6 +40,7 @@
             android:id="@+id/btn3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="btnRedeemRCard"
             android:text="@string/btnR" />
 
         <TextView
@@ -64,6 +65,7 @@
             android:id="@+id/btn4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="btnRedeemGCard"
             android:text="@string/btnR" />
 
     </LinearLayout>

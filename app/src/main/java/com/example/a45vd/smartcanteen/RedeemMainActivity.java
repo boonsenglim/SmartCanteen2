@@ -1,24 +1,14 @@
 package com.example.a45vd.smartcanteen;
 
         import android.support.v4.app.Fragment;
-        import android.app.ProgressDialog;
         import android.content.Context;
-        import android.content.DialogInterface;
-        import android.content.Intent;
-        import android.graphics.Bitmap;
         import android.os.Bundle;
         import android.support.annotation.NonNull;
         import android.support.design.widget.BottomNavigationView;
-        import android.support.v4.app.Fragment;
         import android.support.v4.app.FragmentTransaction;
-        import android.support.v7.app.AlertDialog;
         import android.support.v7.app.AppCompatActivity;
         import android.view.MenuItem;
         import android.view.View;
-        import android.view.inputmethod.InputMethodManager;
-        import android.widget.EditText;
-        import android.widget.ImageView;
-        import android.widget.ListView;
         import android.widget.TextView;
         import android.widget.Toast;
 
@@ -27,37 +17,29 @@ package com.example.a45vd.smartcanteen;
         import com.android.volley.RequestQueue;
         import com.android.volley.Response;
         import com.android.volley.VolleyError;
-        import com.android.volley.toolbox.JsonArrayRequest;
         import com.android.volley.toolbox.StringRequest;
         import com.android.volley.toolbox.Volley;
 /*      import com.example.user.myApp.database.Listing;
         import com.example.user.myApp.database.ListingAdapter;*/
         import com.example.a45vd.smartcanteen.database.History;
-        import com.example.a45vd.smartcanteen.database.Member;
-        import com.google.zxing.integration.android.IntentIntegrator;
-        import com.google.zxing.integration.android.IntentResult;
 
 
-        import org.json.JSONArray;
         import org.json.JSONException;
         import org.json.JSONObject;
 
-        import java.util.ArrayList;
         import java.util.HashMap;
         import java.util.List;
         import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
-    public static String WalletID = "s2";
-    public static String email;
-    public static double Balance=0;
-    public static int LoyaltyPoint=0;
-    public static String DiscCode = null;
+public class RedeemMainActivity extends AppCompatActivity {
+    public static String WalletID;
+    public static String newString;
+    public static double Balance = 0;
+    public static int LoyaltyPoint = 0;
     public static List<History> hList = null;
     TextView tvBalance;
 
     static final int TOP_UP_REQUEST = 1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,19 +47,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
-
         //get User info
-        Bundle extras = getIntent().getExtras();
-        if (extras == null) {
-            Toast.makeText(this, "ERROR: NO EXTRAS FOUND!", Toast.LENGTH_SHORT).show();
-            //finish();
-        }else{
-            WalletID = extras.getString("WalletID");
-//        email = extras.getString("email");
-            Balance = extras.getDouble("Balance");
-            LoyaltyPoint = extras.getInt("LoyaltyPoint");
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if (extras == null) {
+                newString = null;
+                Toast.makeText(this, "ERROR: NO EXTRAS FOUND!", Toast.LENGTH_SHORT).show();
+                //finish();
+            } else {
+                newString = extras.getString("WalletID");
+            }
+        } else{
+            Bundle extras = getIntent().getExtras();
+                newString = (String) savedInstanceState.getSerializable("WalletID");
+                WalletID = extras.getString("WalletID");
+                LoyaltyPoint = Integer.parseInt(extras.getString("LoyaltyPoint"));
+                Balance = Double.parseDouble(extras.getString("Balance"));
         }
-        checkBalance(MainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php");
+       checkBalance(RedeemMainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php");
 
 
         //Manually displaying the first fragment - one time only
@@ -92,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 Fragment fragment = null;
                 switch (item.getItemId()) {
                     case R.id.action_Home:
-                        checkBalance(MainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php");
+                        checkBalance(RedeemMainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php");
                         fragment = FragmentHome.newInstance();
                         break;
                     case R.id.action_Coupon:
@@ -102,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment = FragmentItem.newInstance();
                         break;
                     case R.id.action_history:
-                        checkBalance(MainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php");
+                        checkBalance(RedeemMainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php");
                         fragment = FragmentHistory.newInstance();
                         break;
                 }
@@ -143,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), "Balance loaded", Toast.LENGTH_LONG).show();
                                     tvBalance = (TextView) findViewById(R.id.tvBalance1);
                                     if (tvBalance != null)
-                                        tvBalance.setText(MainActivity.LoyaltyPoint+"");
+                                        tvBalance.setText(RedeemMainActivity.LoyaltyPoint+"");
                                 } else if (success == 2) {
                                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
                                     err += "User not found.";
