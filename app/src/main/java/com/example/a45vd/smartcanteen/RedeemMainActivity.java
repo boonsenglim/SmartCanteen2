@@ -65,7 +65,7 @@ public class RedeemMainActivity extends AppCompatActivity {
                 LoyaltyPoint = Integer.parseInt(extras.getString("LoyaltyPoint"));
                 Balance = Double.parseDouble(extras.getString("Balance"));
         }
-       checkBalance(RedeemMainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php");
+       checkBalance(RedeemMainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php", WalletID);
 
 
         //Manually displaying the first fragment - one time only
@@ -80,7 +80,7 @@ public class RedeemMainActivity extends AppCompatActivity {
                 Fragment fragment = null;
                 switch (item.getItemId()) {
                     case R.id.action_Home:
-                        checkBalance(RedeemMainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php");
+                        checkBalance(RedeemMainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php", WalletID);
                         fragment = FragmentHome.newInstance();
                         break;
                     case R.id.action_Coupon:
@@ -90,7 +90,7 @@ public class RedeemMainActivity extends AppCompatActivity {
                         fragment = FragmentItem.newInstance();
                         break;
                     case R.id.action_history:
-                        checkBalance(RedeemMainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php");
+                        checkBalance(RedeemMainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php", WalletID);
                         fragment = FragmentHistory.newInstance();
                         break;
                 }
@@ -104,7 +104,7 @@ public class RedeemMainActivity extends AppCompatActivity {
 
     }
 
-    public void checkBalance(Context context, String url) {
+    public void checkBalance(Context context, String url, final String walletID) {
         //mPostCommentResponse.requestStarted();
         RequestQueue queue = Volley.newRequestQueue(context);
 
