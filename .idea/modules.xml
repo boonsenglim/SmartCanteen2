@@ -2,14 +2,15 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SmartCanteen.iml" filepath="$PROJECT_DIR$/SmartCanteen.iml" />
       <module fileurl="file://D:\AndroidStudioProjects\SmartCanteen2\SmartCanteen.iml" filepath="D:\AndroidStudioProjects\SmartCanteen2\SmartCanteen.iml" />
+      <module fileurl="file://C:\MAD_Projects\SmartCanteen2BS2\SmartCanteen.iml" filepath="C:\MAD_Projects\SmartCanteen2BS2\SmartCanteen.iml" />
       <module fileurl="file://C:\MAD_Projects\SmartCanteenBS\SmartCanteen.iml" filepath="C:\MAD_Projects\SmartCanteenBS\SmartCanteen.iml" />
       <module fileurl="file://C:\Users\A45VD\AndroidStudioProjects\SmartCanteen\SmartCanteen2.iml" filepath="C:\Users\A45VD\AndroidStudioProjects\SmartCanteen\SmartCanteen2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SmartCanteen2BS2.iml" filepath="$PROJECT_DIR$/SmartCanteen2BS2.iml" />
       <module fileurl="file://C:\Users\A45VD\AndroidStudioProjects\SmartCanteen\.idea\SmartCanteenBS.iml" filepath="C:\Users\A45VD\AndroidStudioProjects\SmartCanteen\.idea\SmartCanteenBS.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../SmartCanteenBS/app/app.iml" filepath="$PROJECT_DIR$/../SmartCanteenBS/app/app.iml" />
+      <module fileurl="file://C:\MAD_Projects\SmartCanteen2BS2\app\app.iml" filepath="C:\MAD_Projects\SmartCanteen2BS2\app\app.iml" />
       <module fileurl="file://D:\AndroidStudioProjects\SmartCanteen2\app\app.iml" filepath="D:\AndroidStudioProjects\SmartCanteen2\app\app.iml" />
-      <module fileurl="file://C:\MAD_Projects\SmartCanteenBS\app\app.iml" filepath="C:\MAD_Projects\SmartCanteenBS\app\app.iml" />
     </modules>
   </component>
 </project>
