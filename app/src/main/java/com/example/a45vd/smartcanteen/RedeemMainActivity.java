@@ -32,14 +32,13 @@ package com.example.a45vd.smartcanteen;
         import java.util.Map;
 
 public class RedeemMainActivity extends AppCompatActivity {
-    public static String WalletID;
+    public static String walletID;
     public static String newString;
-    public static double Balance = 0;
-    public static int LoyaltyPoint = 0;
+    public static double balance;
+    public static int LoyaltyPoint;
+
     public static List<History> hList = null;
     TextView tvBalance;
-
-    static final int TOP_UP_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +60,11 @@ public class RedeemMainActivity extends AppCompatActivity {
         } else{
             Bundle extras = getIntent().getExtras();
                 newString = (String) savedInstanceState.getSerializable("WalletID");
-                WalletID = extras.getString("WalletID");
+                walletID = extras.getString("WalletID");
                 LoyaltyPoint = Integer.parseInt(extras.getString("LoyaltyPoint"));
-                Balance = Double.parseDouble(extras.getString("Balance"));
+                balance = Double.parseDouble(extras.getString("Balance"));
         }
-       checkBalance(RedeemMainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php", WalletID);
+       checkBalance(RedeemMainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php");
 
 
         //Manually displaying the first fragment - one time only
@@ -80,7 +79,7 @@ public class RedeemMainActivity extends AppCompatActivity {
                 Fragment fragment = null;
                 switch (item.getItemId()) {
                     case R.id.action_Home:
-                        checkBalance(RedeemMainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php", WalletID);
+                        checkBalance(RedeemMainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php");
                         fragment = FragmentHome.newInstance();
                         break;
                     case R.id.action_Coupon:
@@ -90,7 +89,7 @@ public class RedeemMainActivity extends AppCompatActivity {
                         fragment = FragmentItem.newInstance();
                         break;
                     case R.id.action_history:
-                        checkBalance(RedeemMainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php", WalletID);
+                        checkBalance(RedeemMainActivity.this, "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_user.php");
                         fragment = FragmentHistory.newInstance();
                         break;
                 }
@@ -104,7 +103,7 @@ public class RedeemMainActivity extends AppCompatActivity {
 
     }
 
-    public void checkBalance(Context context, String url, final String walletID) {
+    public void checkBalance(Context context, String url) {
         //mPostCommentResponse.requestStarted();
         RequestQueue queue = Volley.newRequestQueue(context);
 
@@ -126,12 +125,12 @@ public class RedeemMainActivity extends AppCompatActivity {
                                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
                                 } else if (success == 1) {
-                                    Balance = jsonObject.getDouble("Balance");
+                                    balance = jsonObject.getDouble("Balance");
                                     LoyaltyPoint = jsonObject.getInt("LoyaltyPoint");
                                     Toast.makeText(getApplicationContext(), "Balance loaded", Toast.LENGTH_LONG).show();
                                     tvBalance = (TextView) findViewById(R.id.tvBalance1);
                                     if (tvBalance != null)
-                                        tvBalance.setText(RedeemMainActivity.LoyaltyPoint+"");
+                                        tvBalance.setText(String.format(Integer.toString(RedeemMainActivity.LoyaltyPoint)));
                                 } else if (success == 2) {
                                     Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
                                     err += "User not found.";
@@ -157,7 +156,7 @@ public class RedeemMainActivity extends AppCompatActivity {
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
-                    params.put("WalletID", WalletID);
+                    params.put("WalletID", walletID);
                     return params;
                 }
 

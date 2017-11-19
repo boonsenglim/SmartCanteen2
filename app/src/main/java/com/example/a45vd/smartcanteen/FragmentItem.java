@@ -217,12 +217,12 @@ public class FragmentItem extends Fragment implements View.OnClickListener{
                                     Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
                                 } else if (success == 1) {
-                                    RedeemMainActivity.Balance = jsonObject.getDouble("balance");
+                                    RedeemMainActivity.balance = jsonObject.getDouble("balance");
                                     RedeemMainActivity.LoyaltyPoint = jsonObject.getInt("RewardPoint");
                                     if (RedeemMainActivity.LoyaltyPoint > entry.getPointNeeded()) {
                                         allowRefresh = true;
                                         String entryRewardID = String.valueOf(entry.getProductName());
-                                        insertRedeem(getActivity().getApplicationContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redeem.php", entryRewardID, RedeemMainActivity.WalletID);
+                                        insertRedeem(getActivity().getApplicationContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redeem.php", entryRewardID, RedeemMainActivity.walletID);
                                         RedeemMainActivity.LoyaltyPoint -= entry.getPointNeeded();
                                         tvRewardBalance.setText(RedeemMainActivity.LoyaltyPoint + "");
                                     } else {
@@ -255,7 +255,7 @@ public class FragmentItem extends Fragment implements View.OnClickListener{
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
-                    params.put("username", RedeemMainActivity.WalletID);
+                    params.put("username", RedeemMainActivity.walletID);
                     return params;
                 }
 
@@ -290,7 +290,7 @@ public class FragmentItem extends Fragment implements View.OnClickListener{
                 if (RedeemMainActivity.LoyaltyPoint >= 1500){
                     RedeemMainActivity.LoyaltyPoint -= 1500;
                     try {
-                        String itCode = "RC" + timenow.getTime() + RedeemMainActivity.WalletID;
+                        String itCode = "RC" + timenow.getTime() + RedeemMainActivity.walletID;
                         String desc = "RM 10 Reload Card";
                         update(getContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/update_point.php");
                         insert(getContext() , "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redemption_item.php",itCode,desc);
@@ -307,7 +307,7 @@ public class FragmentItem extends Fragment implements View.OnClickListener{
                 if (RedeemMainActivity.LoyaltyPoint >= 2000){
                     RedeemMainActivity.LoyaltyPoint -= 2000;
                     try {
-                        String itCode = "GC" + timenow.getTime() + RedeemMainActivity.WalletID;
+                        String itCode = "GC" + timenow.getTime() + RedeemMainActivity.walletID;
                         String desc = "RM 10 Gift Card";
                         update(getContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/update_point.php");
                         insert(getContext() , "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redemption_item.php",itCode,desc);
@@ -348,7 +348,7 @@ public class FragmentItem extends Fragment implements View.OnClickListener{
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
                     params.put("LoyaltyPoint", String.valueOf(RedeemMainActivity.LoyaltyPoint));
-                    params.put("WalletID", String.valueOf(RedeemMainActivity.WalletID));
+                    params.put("WalletID", String.valueOf(RedeemMainActivity.walletID));
                     return params;
                 }
 
@@ -390,7 +390,7 @@ public class FragmentItem extends Fragment implements View.OnClickListener{
                     Map<String, String> params = new HashMap<>();
                     params.put("Description",desc);
                     params.put("ItemCode", itCode);
-                    params.put("WalletID", RedeemMainActivity.WalletID);
+                    params.put("WalletID", RedeemMainActivity.walletID);
                     return params;
                 }
 

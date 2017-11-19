@@ -29,7 +29,7 @@ public class FragmentHome extends Fragment {
 
     //Reward list
     public static final String TAG = "com.example.user.myApp";
-    private static String GET_URL = "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_reward.php";
+    private static String GET_URL = "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/select_redemption.php";
     public static boolean allowRefresh;
 
     TextView tvRewardBalance;
@@ -42,20 +42,22 @@ public class FragmentHome extends Fragment {
         return fragment;
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-
-        tvBalance = (TextView) rootView.findViewById(R.id.tvBalance1);
-        if (tvBalance != null)
-            tvBalance.setText(RedeemMainActivity.LoyaltyPoint+"");
-        return rootView;
-    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
     }
+
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        tvBalance = (TextView) rootView.findViewById(R.id.tvBalance1);
+        if (tvBalance != null)
+            tvBalance.setText(String.format(Integer.toString(RedeemMainActivity.LoyaltyPoint)));
+        return rootView;
+    }
+
+
 
 
     public void insertRedeem(Context context, String url, final String id, final String WalletID) {
@@ -136,12 +138,12 @@ public class FragmentHome extends Fragment {
                                     Toast.makeText(getActivity().getApplicationContext(), message, Toast.LENGTH_LONG).show();
 
                                 } else if (success == 1) {
-                                    RedeemMainActivity.Balance = jsonObject.getDouble("Balance");
+                                    RedeemMainActivity.balance = jsonObject.getDouble("Balance");
                                     RedeemMainActivity.LoyaltyPoint = jsonObject.getInt("LoyaltyPoint");
                                     if (RedeemMainActivity.LoyaltyPoint > entry.getPointNeeded()) {
                                         allowRefresh = true;
                                         String entryRewardID = String.valueOf(entry.getProductName());
-                                        insertRedeem(getActivity().getApplicationContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redemption.php", entryRewardID, RedeemMainActivity.WalletID);
+                                        insertRedeem(getActivity().getApplicationContext(), "https://leowwj-wa15.000webhostapp.com/smart%20canteen%20system/insert_redemption.php", entryRewardID, RedeemMainActivity.walletID);
                                         RedeemMainActivity.LoyaltyPoint -= entry.getPointNeeded();
                                         tvRewardBalance.setText(RedeemMainActivity.LoyaltyPoint + "");
                                     } else {
@@ -174,7 +176,7 @@ public class FragmentHome extends Fragment {
                 @Override
                 protected Map<String, String> getParams() {
                     Map<String, String> params = new HashMap<>();
-                    params.put("WalletID", RedeemMainActivity.WalletID);
+                    params.put("WalletID", RedeemMainActivity.walletID);
                     return params;
                 }
 
